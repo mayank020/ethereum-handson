@@ -1,0 +1,15 @@
+{
+  "name": "hotel",
+  "version": "1.0.0",
+  "description": "A blockchain app for hotel booking",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ethereumjs-testrpc": "^3.9.2",
+    "web3": "^0.19.1"
+  }
+}
