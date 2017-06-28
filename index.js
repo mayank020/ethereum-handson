@@ -7,4 +7,7 @@ DeployedHotelContract = hotelContractDefinition.new('Blockchain Hotel', 'Book yo
 hotelContractInstance = hotelContractDefinition.at(DeployedHotelContract.address);
 
 
-"AC_SINGLE", "Single AC Room", 2, 100, true
+"Ethereum Hotel", "ABC", "12.9716", "77.5946"
+1, "Single AC Room", 2, 100, true
+19800, true
+1, 18500, 18502, 1

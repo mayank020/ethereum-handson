@@ -1,4 +1,4 @@
-pragma solidity ^0.4.10;
+pragma solidity ^0.4.11;
 
 /*
 *   A contract of hotel to manage and book the rooms
@@ -22,7 +22,7 @@ contract Hotel {
     */
     struct Booking {
         address customer;
-        bytes16 roomIdentifier;
+        uint roomIdentifier;
         uint16 startDate;
         uint16 endDate;
         uint16 roomCount;
@@ -34,19 +34,19 @@ contract Hotel {
     bytes32 public name;
     string public description;
     address public owner;
-    uint16 private timezone;
-    bool private positiveTimezone;
+    uint16 public timezone;
+    bool public positiveTimezone;
     bytes16 public locationLatitude;
     bytes16 public locationLongitude;
 
     uint private lastBookingId = 0;
-    mapping (bytes16 => Room) public rooms;
+    mapping (uint => Room) public rooms;
     mapping (uint => Booking) private bookings;
 
     /**
     * Modifiers to check conditions
     */
-    modifier roomActive(bytes16 _roomIdentifier) {if (!rooms[_roomIdentifier].isActive) throw; _;}
+    modifier roomActive(uint _roomIdentifier) {if (!rooms[_roomIdentifier].isActive) throw; _;}
 
     modifier futureDate(uint16 _date) {
         if (positiveTimezone && now >= _date * 86400 + timezone){
@@ -92,7 +92,7 @@ contract Hotel {
     * @param _isCancellable Is cancallation allowed
     */
     function addOrUpdateRoom(
-        bytes16 _roomIdentifier,
+        uint _roomIdentifier,
         string _desc,
         uint16 _count,
         uint _price,
@@ -138,7 +138,7 @@ contract Hotel {
     /**
     * Set the timezone of the hotel
     * @param _timezone Timezone value of the hotel
-    * @param _positive Timezone sign
+    * @param _positive Timezone
     */
     function setTimeZone(uint16 _timezone, bool _positive) public onlyOwner {
         timezone = _timezone;
@@ -159,7 +159,7 @@ contract Hotel {
     * @return bookingId Id of the booking
     */
     function bookARoom(
-        bytes16 _roomIdentifier,
+        uint _roomIdentifier,
         uint16 _startDate,
         uint16 _endDate,
         uint16 _count
@@ -220,7 +220,7 @@ contract Hotel {
     * @return description Room Description
     * @return price Price of one room booking
     */
-    function getRoomInfo(bytes16 _roomIdentifier)
+    function getRoomInfo(uint _roomIdentifier)
         public
         constant
         roomActive(_roomIdentifier)
@@ -238,7 +238,7 @@ contract Hotel {
     * @return bool true if available false if not
     */
     function checkAvailability(
-        bytes16 _roomIdentifier,
+        uint _roomIdentifier,
         uint16 _startDate,
         uint16 _endDate,
         uint16 _count
@@ -251,6 +251,9 @@ contract Hotel {
         endDateLaterThanStartDate(_startDate, _endDate)
         returns (bool)
     {
+        uint identifier = _roomIdentifier;
+        uint16 startDate = _startDate;
+        uint16 endDate = _endDate;
         Room room = rooms[_roomIdentifier];
         uint totalRoomCount = room.totalRoomCount;
 
@@ -288,7 +291,7 @@ contract Hotel {
     * @param _count Number of rooms to book
     */
     function checkEnoughMoney(
-        bytes16 _roomIdentifier,
+        uint _roomIdentifier,
         uint16 _startDate,
         uint16 _endDate,
         uint16 _count
