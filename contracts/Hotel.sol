@@ -251,9 +251,6 @@ contract Hotel {
         endDateLaterThanStartDate(_startDate, _endDate)
         returns (bool)
     {
-        uint identifier = _roomIdentifier;
-        uint16 startDate = _startDate;
-        uint16 endDate = _endDate;
         Room room = rooms[_roomIdentifier];
         uint totalRoomCount = room.totalRoomCount;
 
